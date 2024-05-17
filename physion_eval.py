@@ -6,7 +6,7 @@ import torch
 class VJEPA(PhysionFeatureExtractor):
     def __init__(self, weights_path, model_name):
         super().__init__()
-        import src.models.vision_transformer as vit
+        import jepa.src.models.vision_transformer as vit
         import torch
 
         # download the model and put it in the folder.

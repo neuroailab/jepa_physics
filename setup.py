@@ -14,6 +14,8 @@ def get_requirements():
         reqs = reqsf.readlines()
     return reqs
 
+from setuptools import setup, find_packages
+
 
 if __name__ == "__main__":
     setup(
@@ -21,5 +23,11 @@ if __name__ == "__main__":
         version=VERSION,
         description="JEPA research code.",
         python_requires=">=3.9",
-        install_requires=get_requirements(),
+        packages=find_packages(),
+        # install_requires=get_requirements(),
+        entry_points={
+            'console_scripts': [
+                'jepa = jepa.evals.main:main',
+            ],
+        },
     )

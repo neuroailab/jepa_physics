@@ -246,7 +246,7 @@ The V-JEPA feature predictions are indeed grounded, and exhibit spatio-temporal 
 ## Code Structure
 
 **Config files:**
-All experiment parameters are specified in config files (as opposed to command-line arguments). See the [configs/](configs/) directory for example config files. Note, before launching an experiment, you must update the paths in the config file to point to your own directories, indicating where to save the logs and checkpoints and where to find the training data.
+All experiment parameters are specified in config files (as opposed to command-line arguments). See the [configs/](jepa/configs/) directory for example config files. Note, before launching an experiment, you must update the paths in the config file to point to your own directories, indicating where to save the logs and checkpoints and where to find the training data.
 
 
 ```
@@ -331,7 +331,7 @@ For example, suppose we have a directory called ``my_image_datasets``. We would 
 If you wish to debug your code or setup before launching a distributed training run, we provide the functionality to do so by running the pretraining script locally on a multi-GPU (or single-GPU) machine, however, reproducing our results requires launching distributed training.
 
 The single-machine implementation starts from the [app/main.py](appmain.py), which parses the experiment config file and runs the pretraining locally on a multi-GPU (or single-GPU) machine.
-For example, to run V-JEPA pretraining on GPUs "0", "1", and "2" on a local machine using the config [configs/pretrain/vitl16.yaml](configs/pretrain/vitl16.yaml), type the command:
+For example, to run V-JEPA pretraining on GPUs "0", "1", and "2" on a local machine using the config [configs/pretrain/vitl16.yaml](jepa/configs/pretrain/vitl16.yaml), type the command:
 ```bash
 python -m app.main \
   --fname configs/pretrain/vitl16.yaml \
@@ -339,9 +339,9 @@ python -m app.main \
 ```
 
 ### Distributed training
-To launch a distributed training run, the implementation starts from [app/main_distributed.py](app/main_distributed.py), which, in addition to parsing the config file, also allows for specifying details about distributed training. For distributed training, we use the popular open-source [submitit](https://github.com/facebookincubator/submitit) tool and provide examples for a SLURM cluster.
+To launch a distributed training run, the implementation starts from [app/main_distributed.py](jepa/app/main_distributed.py), which, in addition to parsing the config file, also allows for specifying details about distributed training. For distributed training, we use the popular open-source [submitit](https://github.com/facebookincubator/submitit) tool and provide examples for a SLURM cluster.
 
-For example, to launch a distributed pre-training experiment using the config [configs/pretrain/vitl16.yaml](configs/pretrain/vitl16.yaml), type the command:
+For example, to launch a distributed pre-training experiment using the config [configs/pretrain/vitl16.yaml](jepa/configs/pretrain/vitl16.yaml), type the command:
 ```bash
 python -m app.main_distributed \
   --fname configs/pretrain/vitl16.yaml \
@@ -355,7 +355,7 @@ python -m app.main_distributed \
 If you wish to debug your eval code or setup before launching a distributed training run, we provide the functionality to do so by running the evaluation script locally on a multi-GPU (or single-GPU) machine, however, reproducing the full eval would require launching distributed training.
 The single-machine implementation starts from the [eval/main.py](eval/main.py), which parses the experiment config file and runs the eval locally on a multi-GPU (or single-GPU) machine.
 
-For example, to run ImageNet image classification on GPUs "0", "1", and "2" on a local machine using the config [configs/eval/vitl16_in1k.yaml](configs/eval/vitl16_in1k.yaml), type the command:
+For example, to run ImageNet image classification on GPUs "0", "1", and "2" on a local machine using the config [configs/eval/vitl16_in1k.yaml](jepa/configs/eval/vitl16_in1k.yaml), type the command:
 ```bash
 python -m evals.main \
   --fname configs/eval/vitl16_in1k.yaml \
@@ -366,7 +366,7 @@ python -m evals.main \
 ### Distributed training
 To launch a distributed evaluation run, the implementation starts from [eval/main_distributed.py](eval/main_distributed.py), which, in addition to parsing the config file, also allows for specifying details about distributed training. For distributed training, we use the popular open-source [submitit](https://github.com/facebookincubator/submitit) tool and provide examples for a SLURM cluster.
 
-For example, to launch a distributed ImageNet image classification experiment using the config [configs/eval/vitl16_in1k.yaml](configs/eval/vitl16_in1k.yaml), type the command:
+For example, to launch a distributed ImageNet image classification experiment using the config [configs/eval/vitl16_in1k.yaml](jepa/configs/eval/vitl16_in1k.yaml), type the command:
 ```bash
 python -m evals.main_distributed \
   --fname configs/eval/vitl16_in1k.yaml \
@@ -374,7 +374,7 @@ python -m evals.main_distributed \
   --partition $slurm_partition
 ```
 
-Similarly, to launch a distributed K400 video classification experiment using the config [configs/eval/vitl16_k400.yaml](configs/eval/vitl16_k400.yaml), type the command:
+Similarly, to launch a distributed K400 video classification experiment using the config [configs/eval/vitl16_k400.yaml](jepa/configs/eval/vitl16_k400.yaml), type the command:
 ```bash
 python -m evals.main_distributed \
   --fname configs/eval/vitl16_k400.yaml \
