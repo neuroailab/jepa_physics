@@ -25,8 +25,12 @@ parser.add_argument(
     '--devices', type=str, nargs='+', default=['cuda:0'],
     help='which devices to use on local machine')
 
+parser.add_argument(
+    '--port', type=int, default=37132,
+    help='which port to use')
 
-def process_main(rank, fname, world_size, devices):
+
+def process_main(rank, fname, world_size, devices, port):
     import os
     os.environ['CUDA_VISIBLE_DEVICES'] = str(devices[rank].split(':')[-1])
 
@@ -49,7 +53,7 @@ def process_main(rank, fname, world_size, devices):
         pp.pprint(params)
 
     # Init distributed (access to comm between GPUS on same machine)
-    world_size, rank = init_distributed(rank_and_world_size=(rank, world_size))
+    world_size, rank = init_distributed(port=port, rank_and_world_size=(rank, world_size))
     logger.info(f'Running... (rank: {rank}/{world_size})')
 
     # Launch the eval with loaded config
@@ -63,5 +67,5 @@ if __name__ == '__main__':
     for rank in range(num_gpus):
         mp.Process(
             target=process_main,
-            args=(rank, args.fname, num_gpus, args.devices)
+            args=(rank, args.fname, num_gpus, args.devices, args.port)
         ).start()
