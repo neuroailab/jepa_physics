@@ -103,14 +103,14 @@ class ClipAggregation(nn.Module):
         self.num_heads = model.num_heads
         self.attend_across_segments = attend_across_segments
         # 1D-temporal pos-embedding
-        self.pos_embed = None
-        if use_pos_embed:
-            max_T = max_frames // tubelet_size
-            self.pos_embed = nn.Parameter(
-                torch.zeros(1, max_T, embed_dim),
-                requires_grad=False)
-            sincos = get_1d_sincos_pos_embed(embed_dim, max_T)
-            self.pos_embed.copy_(torch.from_numpy(sincos).float().unsqueeze(0))
+        self.pos_embed = model.get_pos_embed()
+        # if use_pos_embed:
+        #     max_T = max_frames // tubelet_size
+        #     self.pos_embed = nn.Parameter(
+        #         torch.zeros(1, max_T, embed_dim),
+        #         requires_grad=False)
+        #     sincos = get_1d_sincos_pos_embed(embed_dim, max_T)
+        #     self.pos_embed.copy_(torch.from_numpy(sincos).float().unsqueeze(0))
 
     def forward(self, x, clip_indices=None):
 
@@ -122,6 +122,9 @@ class ClipAggregation(nn.Module):
         x = [torch.cat(xi, dim=0) for xi in x]
         x = torch.cat(x, dim=0)
         outputs = self.model(x)
+
+        if self.pos_embed is not None:
+            outputs = self.model.apply_pos_embed(outputs, self.pos_embed)
 
         _, N, D = outputs.size()
 
@@ -147,16 +150,16 @@ class ClipAggregation(nn.Module):
             outputs = torch.cat(outputs, dim=1) #shape: B, T*num_clips, N, D
             outputs = outputs.flatten(1, 2)
 
-            # Compute positional embedding
-            if (self.pos_embed is not None) and (clip_indices is not None):
-                print(clip_indices)
-                clip_indices = [c[:, ::self.tubelet_size] for c in clip_indices]
-                pos_embed = self.pos_embed.repeat(B, 1, 1)  # [B, F, D]
-                pos_embed = apply_masks(pos_embed, clip_indices, concat=False)  # list(Tensor([B, T, D]))
-                pos_embed = torch.cat(pos_embed, dim=1)  # concatenate along temporal dimension
-                pos_embed = pos_embed.unsqueeze(2).repeat(1, 1, N, 1)  # [B, T*num_clips, N, D]
-                pos_embed = pos_embed.flatten(1, 2)
-                outputs += pos_embed
+            # # Compute positional embedding
+            # if (self.pos_embed is not None) and (clip_indices is not None):
+            #     print(clip_indices)
+            #     clip_indices = [c[:, ::self.tubelet_size] for c in clip_indices]
+            #     pos_embed = self.pos_embed.repeat(B, 1, 1)  # [B, F, D]
+            #     pos_embed = apply_masks(pos_embed, clip_indices, concat=False)  # list(Tensor([B, T, D]))
+            #     pos_embed = torch.cat(pos_embed, dim=1)  # concatenate along temporal dimension
+            #     pos_embed = pos_embed.unsqueeze(2).repeat(1, 1, N, 1)  # [B, T*num_clips, N, D]
+            #     pos_embed = pos_embed.flatten(1, 2)
+            #     outputs += pos_embed
 
             all_outputs[i] = outputs
 

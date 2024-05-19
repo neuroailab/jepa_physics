@@ -36,4 +36,4 @@ pretrain:
   patch_size: 16
   folder: /ccn2/u/rmvenkat/code/deploy_code/jepa_physics/
   checkpoint: ./vitl16.pth.tar  # name of pretrained model file inside folder
-  write_tag: jepa
+  write_tag: vmae_large

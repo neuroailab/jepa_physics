@@ -285,20 +285,21 @@ def main(args_eval, resume_preempt=False, model_name_gb=None):
             data_loader=train_loader,
             use_bfloat16=use_bfloat16)
 
-        val_acc = run_one_epoch(
-            device=device,
-            training=False,
-            num_temporal_views=eval_num_segments,
-            attend_across_segments=attend_across_segments,
-            num_spatial_views=eval_num_views_per_segment,
-            encoder=encoder,
-            classifier=classifier,
-            scaler=scaler,
-            optimizer=optimizer,
-            scheduler=scheduler,
-            wd_scheduler=wd_scheduler,
-            data_loader=val_loader,
-            use_bfloat16=use_bfloat16)
+        if (epoch % 3 == 0) or (epoch == num_epochs - 1):
+            val_acc = run_one_epoch(
+                device=device,
+                training=False,
+                num_temporal_views=eval_num_segments,
+                attend_across_segments=attend_across_segments,
+                num_spatial_views=eval_num_views_per_segment,
+                encoder=encoder,
+                classifier=classifier,
+                scaler=scaler,
+                optimizer=optimizer,
+                scheduler=scheduler,
+                wd_scheduler=wd_scheduler,
+                data_loader=val_loader,
+                use_bfloat16=use_bfloat16)
 
         logger.info('[%5d] train: %.3f%% test: %.3f%%' % (epoch + 1, train_acc, val_acc))
         if rank == 0:
