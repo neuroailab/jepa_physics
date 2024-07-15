@@ -191,8 +191,8 @@ def main(args_eval, resume_preempt=False, model_name_gb=None):
 
     # -- init classifier
     classifier = AttentiveClassifier(
-        embed_dim=encoder.get_embed_dim(),
-        num_heads=encoder.get_num_heads(),
+        embed_dim=encoder.model.get_embed_dim(),
+        num_heads=encoder.model.get_num_heads(),
         depth=1,
         num_classes=num_classes,
     ).to(device)
