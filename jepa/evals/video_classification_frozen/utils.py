@@ -128,10 +128,6 @@ class ClipAggregation(nn.Module):
 
         _, N, D = outputs.size()
 
-        T = T // self.tubelet_size  # Num temporal tokens
-        N = N // T  # Num spatial tokens
-        #refer to get seg readout for the shape of videoame: it's B, 8, 14, 14, D
-
         # Unroll outputs into a 2D array [spatial_views x temporal_views]
         eff_B = B * num_views_per_clip
         all_outputs = [[] for _ in range(num_views_per_clip)]
@@ -140,28 +136,6 @@ class ClipAggregation(nn.Module):
             for j in range(num_views_per_clip):
                 all_outputs[j].append(o[j*B:(j+1)*B])
 
-        if not self.attend_across_segments:
-            return all_outputs
-
-        for i, outputs in enumerate(all_outputs):
-
-            # Concatenate along temporal dimension
-            outputs = [o.reshape(B, T, N, D) for o in outputs] # list(Tensor([B, T, N, D]))
-            outputs = torch.cat(outputs, dim=1) #shape: B, T*num_clips, N, D
-            outputs = outputs.flatten(1, 2)
-
-            # # Compute positional embedding
-            # if (self.pos_embed is not None) and (clip_indices is not None):
-            #     print(clip_indices)
-            #     clip_indices = [c[:, ::self.tubelet_size] for c in clip_indices]
-            #     pos_embed = self.pos_embed.repeat(B, 1, 1)  # [B, F, D]
-            #     pos_embed = apply_masks(pos_embed, clip_indices, concat=False)  # list(Tensor([B, T, D]))
-            #     pos_embed = torch.cat(pos_embed, dim=1)  # concatenate along temporal dimension
-            #     pos_embed = pos_embed.unsqueeze(2).repeat(1, 1, N, 1)  # [B, T*num_clips, N, D]
-            #     pos_embed = pos_embed.flatten(1, 2)
-            #     outputs += pos_embed
-
-            all_outputs[i] = outputs
 
         return all_outputs
 
