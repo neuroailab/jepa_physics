@@ -99,18 +99,10 @@ class ClipAggregation(nn.Module):
         super().__init__()
         self.model = model
         self.tubelet_size = tubelet_size
-        self.embed_dim = embed_dim = model.embed_dim
-        self.num_heads = model.num_heads
+
         self.attend_across_segments = attend_across_segments
         # 1D-temporal pos-embedding
         self.pos_embed = model.get_pos_embed()
-        # if use_pos_embed:
-        #     max_T = max_frames // tubelet_size
-        #     self.pos_embed = nn.Parameter(
-        #         torch.zeros(1, max_T, embed_dim),
-        #         requires_grad=False)
-        #     sincos = get_1d_sincos_pos_embed(embed_dim, max_T)
-        #     self.pos_embed.copy_(torch.from_numpy(sincos).float().unsqueeze(0))
 
     def forward(self, x, clip_indices=None):
 

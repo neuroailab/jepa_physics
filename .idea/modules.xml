@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/jepa_physics.iml" filepath="$PROJECT_DIR$/.idea/jepa_physics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../ssv2-models/.idea/ssv2-models.iml" filepath="$PROJECT_DIR$/../ssv2-models/.idea/ssv2-models.iml" />
     </modules>
   </component>
 </project>
