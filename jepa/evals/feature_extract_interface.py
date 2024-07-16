@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
 from torchvision import transforms
+from torch import nn
 
-
-class ActivityRecogFeatureExtractor(ABC):
+class ActivityRecogFeatureExtractor(ABC, nn.Module):
 
     def __int__(self):
         '''

@@ -106,28 +106,11 @@ class ClipAggregation(nn.Module):
 
     def forward(self, x, clip_indices=None):
 
-        num_clips = len(x)
-        num_views_per_clip = len(x[0])
-        B, C, T, H, W = x[0][0].size()
 
+        print(f'ClipAggregation: B={B}, C={C}, T={T}, H={H}, W={W}', num_clips, num_views_per_clip)
         # Concatenate all spatial and temporal views along batch dimension
-        x = [torch.cat(xi, dim=0) for xi in x]
-        x = torch.cat(x, dim=0)
-        outputs = self.model(x)
 
-        if self.pos_embed is not None:
-            outputs = self.model.apply_pos_embed(outputs, self.pos_embed)
-
-        _, N, D = outputs.size()
-
-        # Unroll outputs into a 2D array [spatial_views x temporal_views]
-        eff_B = B * num_views_per_clip
-        all_outputs = [[] for _ in range(num_views_per_clip)]
-        for i in range(num_clips):
-            o = outputs[i*eff_B:(i+1)*eff_B]
-            for j in range(num_views_per_clip):
-                all_outputs[j].append(o[j*B:(j+1)*B])
-
+        all_outputs = self.model(x)
 
         return all_outputs
 

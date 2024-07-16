@@ -93,6 +93,7 @@ def main(args_eval, resume_preempt=False, model_name_gb=None):
     val_data_path = [args_data.get('dataset_val')]
     dataset_type = args_data.get('dataset_type', 'VideoDataset')
     num_classes = args_data.get('num_classes')
+    num_workers = args_data.get('num_workers', 12)
     eval_num_segments = args_data.get('num_segments', 1)
     eval_frames_per_clip = args_data.get('frames_per_clip', 16)
     eval_frame_step = args_pretrain.get('frame_step', 4)
@@ -209,6 +210,7 @@ def main(args_eval, resume_preempt=False, model_name_gb=None):
         allow_segment_overlap=True,
         batch_size=batch_size,
         world_size=world_size,
+        num_workers=num_workers,
         rank=rank,
         training=True)
     val_loader = make_dataloader(
@@ -223,6 +225,7 @@ def main(args_eval, resume_preempt=False, model_name_gb=None):
         allow_segment_overlap=True,
         batch_size=batch_size,
         world_size=world_size,
+        num_workers=num_workers,
         rank=rank,
         training=False)
     ipe = len(train_loader)
