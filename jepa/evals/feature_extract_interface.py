@@ -21,16 +21,6 @@ class ActivityRecogFeatureExtractor(ABC, nn.Module):
         return None
 
     @abstractmethod
-    def get_pos_embed(self):
-
-        return None
-
-    @abstractmethod
-    def apply_pos_embed(self, outputs, pos_embed):
-
-        return None
-
-    @abstractmethod
     def forward(self, videos):
         '''
         videos: [B, C, N, H, W], N is usually 100 for intphys and videos are normalized with imagenet norm

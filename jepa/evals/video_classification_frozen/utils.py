@@ -98,17 +98,8 @@ class ClipAggregation(nn.Module):
     ):
         super().__init__()
         self.model = model
-        self.tubelet_size = tubelet_size
-
-        self.attend_across_segments = attend_across_segments
-        # 1D-temporal pos-embedding
-        self.pos_embed = model.get_pos_embed()
 
     def forward(self, x, clip_indices=None):
-
-
-        print(f'ClipAggregation: B={B}, C={C}, T={T}, H={H}, W={W}', num_clips, num_views_per_clip)
-        # Concatenate all spatial and temporal views along batch dimension
 
         all_outputs = self.model(x)
 
