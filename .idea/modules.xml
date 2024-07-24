@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../cwm/.idea/cwm.iml" filepath="$PROJECT_DIR$/../cwm/.idea/cwm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../cwm_mono/.idea/cwm_mono.iml" filepath="$PROJECT_DIR$/../cwm_mono/.idea/cwm_mono.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/jepa_physics.iml" filepath="$PROJECT_DIR$/.idea/jepa_physics.iml" />
       <module fileurl="file://$PROJECT_DIR$/../ssv2-models/.idea/ssv2-models.iml" filepath="$PROJECT_DIR$/../ssv2-models/.idea/ssv2-models.iml" />
     </modules>

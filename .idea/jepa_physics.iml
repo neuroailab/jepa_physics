@@ -5,5 +5,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="ssv2-models" />
+    <orderEntry type="module" module-name="cwm_mono" />
+    <orderEntry type="module" module-name="cwm" />
   </component>
 </module>

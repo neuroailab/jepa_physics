@@ -112,6 +112,7 @@ def main(args_eval, resume_preempt=False, model_name_gb=None):
     final_lr = args_opt.get('final_lr')
     warmup = args_opt.get('warmup')
     use_bfloat16 = args_opt.get('use_bfloat16')
+    depth = args_opt.get('depth', 1)
 
     # -- EXPERIMENT-ID/TAG (optional)
     resume_checkpoint = args_eval.get('resume_checkpoint', False) or resume_preempt
@@ -194,7 +195,7 @@ def main(args_eval, resume_preempt=False, model_name_gb=None):
     classifier = AttentiveClassifier(
         embed_dim=encoder.model.get_embed_dim(),
         num_heads=encoder.model.get_num_heads(),
-        depth=1,
+        depth=depth,
         num_classes=num_classes,
     ).to(device)
 

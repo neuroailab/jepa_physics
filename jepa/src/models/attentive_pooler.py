@@ -51,6 +51,7 @@ class AttentivePooler(nn.Module):
 
         self.blocks = None
         if depth > 1:
+            print("depth > 1")
             self.blocks = nn.ModuleList([
                 Block(
                     dim=embed_dim,
