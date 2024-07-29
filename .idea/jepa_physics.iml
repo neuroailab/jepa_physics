@@ -7,5 +7,7 @@
     <orderEntry type="module" module-name="ssv2-models" />
     <orderEntry type="module" module-name="cwm_mono" />
     <orderEntry type="module" module-name="cwm" />
+    <orderEntry type="module" module-name="cwm_release" />
+    <orderEntry type="module" module-name="BBNet" />
   </component>
 </module>
